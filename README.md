@@ -1,1 +1,1 @@
-# 3s-SuperComputers
+# Moscow State University - High Performance Computing on Super Computers
