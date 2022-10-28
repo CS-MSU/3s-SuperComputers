@@ -7,20 +7,20 @@ double EXACT = 0.002747253;
 
 int main(int argc, char **argv)
 {
-    int psize, prank, ierr;
+    int psize, prank, ierr, rand_seed;
     double result, eps;
     double x, y, z;
 
 
     eps = strtof(argv[1], NULL);
-
+    rand_seed = strtol(argv[2], NULL, 10);
     ierr = MPI_Init(&argc, &argv);
     ierr = MPI_Comm_size(MPI_COMM_WORLD, &psize);
     ierr = MPI_Comm_rank(MPI_COMM_WORLD, &prank);
 
-    srand(prank * 13);
+    srand(prank * rand_seed);
 
-    double time_elapsed = MPI_Wtime();
+    double res_time, time_elapsed = MPI_Wtime();
 
     double global_sum, local_sum = 0.0;
     long n = 1000 / (eps);
@@ -52,13 +52,16 @@ int main(int argc, char **argv)
 
     time_elapsed = MPI_Wtime() - time_elapsed;
 
+    MPI_Reduce(&time_elapsed, &res_time, 1, MPI_DOUBLE, MPI_MAX, 0,
+                             MPI_COMM_WORLD);
+
     if (prank == 0)
     {
         double error = fabs(EXACT - result);
         printf("result:\t%.10lf\n", result);
         printf("error:\t%.10lf\n", error);
         printf("iters:\t%ld\n", it * n);
-        printf("time:\t%.10lf\n", time_elapsed);
+        printf("time:\t%.10lf\n", res_time);
     }
 
     ierr = MPI_Finalize();
