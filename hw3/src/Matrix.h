@@ -1,7 +1,7 @@
 #ifndef PARALLEL_MATRIX_H
 #define PARALLEL_MATRIX_H
 #include "mpi.h"
-// #include <omp.h>
+#include <omp.h>
 
 class Matrix
 {
