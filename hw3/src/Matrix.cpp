@@ -2,7 +2,7 @@
 
 void Matrix::sub(Matrix &a, Matrix &b, Matrix &result)
 {
-    // #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2)
     for (int i = a.yrange[0]; i < a.yrange[1]; ++i)
     {
         for (int j = a.xrange[0]; j < a.xrange[1]; ++j)
@@ -14,7 +14,7 @@ void Matrix::sub(Matrix &a, Matrix &b, Matrix &result)
 
 void Matrix::add(Matrix &a, Matrix &b, double alpha, double beta, Matrix &result)
 {
-    // #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2)
     for (int i = a.yrange[0]; i < a.yrange[1]; ++i)
     {
         for (int j = a.xrange[0]; j < a.xrange[1]; ++j)
@@ -26,7 +26,7 @@ void Matrix::add(Matrix &a, Matrix &b, double alpha, double beta, Matrix &result
 
 void Matrix::copy(Matrix &a, Matrix &result)
 {
-    // #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2)
     for (int i = a.yrange[0]; i < a.yrange[1]; ++i)
         for (int j = a.xrange[0]; j < a.xrange[1]; ++j)
             result(i, j, 0) = a(i, j, 0);
@@ -34,7 +34,7 @@ void Matrix::copy(Matrix &a, Matrix &result)
 
 void Matrix::coef(Matrix &a, double alpha)
 {
-    // #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2)
     for (int i = a.yrange[0]; i < a.yrange[1]; ++i)
         for (int j = a.xrange[0]; j < a.xrange[1]; ++j)
             a(i, j, 0) = alpha * a(i, j, 0);
@@ -62,7 +62,7 @@ void Matrix::mul(Matrix &A, Matrix &b, Matrix &top_vector, Matrix &bot_vector,
     double right_point, left_point, bot_point, top_point;
     const int start_y = b.yrange[0], end_y = b.yrange[1];
     const int start_x = b.xrange[0], end_x = b.xrange[1];
-    // #pragma omp parallel for collapse(2) private(right_point, left_point, bot_point, top_point)
+    #pragma omp parallel for collapse(2) private(right_point, left_point, bot_point, top_point)
     for (int i = start_y; i < end_y; ++i)
         for (int j = start_x; j < end_x; ++j)
         {
