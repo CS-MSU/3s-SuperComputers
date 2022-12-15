@@ -241,7 +241,7 @@ double PuassonEquation::dot(Matrix &a, Matrix &b, int N, int M, double h1, doubl
 {
     double p1, p2;
     double sum_e2 = 0.0;
-    // #pragma omp parallel for collapse(2) reduction(+:sum_e2)
+    #pragma omp parallel for collapse(2) reduction(+:sum_e2)
     for (int i = yrange[0]; i < yrange[1]; ++i)
         for (int j = xrange[0]; j < xrange[1]; ++j)
         {
@@ -261,7 +261,7 @@ double PuassonEquation::dot(Matrix &a, Matrix &b, int N, int M, double h1, doubl
 double PuassonEquation::norm_c(Matrix &a, int *xrange, int *yrange)
 {
     double max_val = a(0, 0, 0);
-    // #pragma omp parallel for collapse(2) reduction(max:max_val)
+    #pragma omp parallel for collapse(2) reduction(max:max_val)
     for (int i = xrange[0]; i < xrange[1]; ++i)
         for (int j = yrange[0]; j < yrange[1]; ++j)
         {
@@ -501,7 +501,7 @@ void PuassonEquation::optimize(Matrix &matrix, Matrix &f_vector, Matrix &w_vecto
         MPI_Allreduce(&eps_proc, &eps, 1, MPI_DOUBLE, MPI_SUM, comm);
         eps = sqrt(eps);
         ++iter;
-	if (iter > 10000) break;
+	if (iter > 100000) break;
     }
     if (rank == 0)
     {
